@@ -19,11 +19,29 @@ export async function setup(config: DependencyGraphConfig): Promise<void> {
         core.exportVariable('GITHUB_DEPENDENCY_GRAPH_ENABLED', 'false')
         return
     }
-    // Download and submit early, for compatability with dependency review.
-    if (option === DependencyGraphOption.DownloadAndSubmit) {
+    // Handle options that don't need generation early, for compatibility with dependency review.
+    const earlyOptions = [
+        DependencyGraphOption.Submit,
+        DependencyGraphOption.Upload,
+        DependencyGraphOption.SubmitAndUpload,
+        DependencyGraphOption.DownloadAndSubmit
+    ]
+    if (earlyOptions.includes(option)) {
         maybeExportVariable('DEPENDENCY_GRAPH_REPORT_DIR', config.getReportDirectory())
-        await downloadAndSubmitDependencyGraphs(config)
-        return
+        switch (option) {
+            case DependencyGraphOption.Submit:
+                await findAndSubmitDependencyGraphs(config, false)
+                return
+            case DependencyGraphOption.Upload:
+                await findAndUploadDependencyGraphs(config)
+                return
+            case DependencyGraphOption.SubmitAndUpload:
+                await findAndSubmitDependencyGraphs(config, true)
+                return
+            case DependencyGraphOption.DownloadAndSubmit:
+                await downloadAndSubmitDependencyGraphs(config)
+                return
+        }
     }
 
     core.info('Enabling dependency graph generation')
@@ -54,10 +72,15 @@ export async function complete(config: DependencyGraphConfig): Promise<void> {
     const option = config.getDependencyGraphOption()
     try {
         switch (option) {
+            /* this is the default behavior anyway
             case DependencyGraphOption.Disabled:
             case DependencyGraphOption.Generate: // Performed via init-script: nothing to do here
+            case DependencyGraphOption.Submit: // Performed in setup
+            case DependencyGraphOption.Upload: // Performed in setup
+            case DependencyGraphOption.SubmitAndUpload: // Performed in setup
             case DependencyGraphOption.DownloadAndSubmit: // Performed in setup
                 return
+            */
             case DependencyGraphOption.GenerateAndSubmit:
                 await findAndSubmitDependencyGraphs(config, false)
                 return

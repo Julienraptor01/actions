@@ -33,9 +33,21 @@ export async function run(): Promise<void> {
         const config = new DependencyGraphConfig()
         await dependencyGraph.setup(config)
 
-        if (config.getDependencyGraphOption() === DependencyGraphOption.DownloadAndSubmit) {
-            // No execution to perform
-            return
+        switch (config.getDependencyGraphOption()) {
+            case DependencyGraphOption.Submit:
+            case DependencyGraphOption.Upload:
+            case DependencyGraphOption.SubmitAndUpload:
+            case DependencyGraphOption.DownloadAndSubmit:
+                // No execution to perform
+                return
+            /* this is the default behavior anyway
+            case DependencyGraphOption.Disabled:
+            case DependencyGraphOption.Generate:
+            case DependencyGraphOption.GenerateAndSubmit:
+            case DependencyGraphOption.GenerateSubmitAndUpload:
+            case DependencyGraphOption.GenerateAndUpload:
+                break
+            */
         }
 
         // Only execute if arguments have been provided

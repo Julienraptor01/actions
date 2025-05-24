@@ -18,6 +18,12 @@ export class DependencyGraphConfig {
                 return DependencyGraphOption.Disabled
             case 'generate':
                 return DependencyGraphOption.Generate
+            case 'submit':
+                return DependencyGraphOption.Submit
+            case 'upload':
+                return DependencyGraphOption.Upload
+            case 'submit-and-upload':
+                return DependencyGraphOption.SubmitAndUpload
             case 'generate-and-submit':
                 return DependencyGraphOption.GenerateAndSubmit
             case 'generate-submit-and-upload':
@@ -97,6 +103,9 @@ export class DependencyGraphConfig {
 export enum DependencyGraphOption {
     Disabled = 'disabled',
     Generate = 'generate',
+    Submit = 'submit',
+    Upload = 'upload',
+    SubmitAndUpload = 'submit-and-upload',
     GenerateAndSubmit = 'generate-and-submit',
     GenerateSubmitAndUpload = 'generate-submit-and-upload',
     GenerateAndUpload = 'generate-and-upload',

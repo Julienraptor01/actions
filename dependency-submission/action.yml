@@ -99,6 +99,11 @@ inputs:
       Specifies how the dependency-graph should be handled by this action. 
       By default a dependency-graph will be generated, submitted to the dependency-submission API, and saved as a workflow artifact.
       Valid values are:
+        'disabled': No dependency graph will be generated, submitted or saved.
+        'generate': Generates a dependency graph for the project, but does not submit it to the repository or save it as a workflow artifact.
+        'submit': Submits a previously generated dependency graph to the repository, but does not save it as a workflow artifact.
+        'upload': Saves a previously generated dependency graph as a workflow artifact, but does not submit it to the repository.
+        'submit-and-upload': Submits a previously generated dependency graph to the repository and saves it as a workflow artifact.
         'generate-and-submit': Generates a dependency graph for the project and submits it in the same Job.
         'generate-submit-and-upload (default)': As per 'generate-and-submit', but also saves the dependency graph as a workflow artifact.
         'generate-and-upload': Generates a dependency graph for the project and saves it as a workflow artifact. Does not submit it to the repository.
